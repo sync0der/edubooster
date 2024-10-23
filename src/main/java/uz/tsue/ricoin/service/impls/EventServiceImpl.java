@@ -97,7 +97,7 @@ public class EventServiceImpl implements EventService {
                 .name(event.getName())
                 .description(event.getDescription())
                 .place(event.getPlace())
-                .prize(event.getPrice())
+                .price(event.getPrice())
                 .dateTime(event.getDateTime().toString())
                 .isActive(event.isActive())
                 .promoCode(event.getPromoCode())

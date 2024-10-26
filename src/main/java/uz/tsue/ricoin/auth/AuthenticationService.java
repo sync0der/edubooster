@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import uz.tsue.ricoin.dto.request.UserLoginRequestDto;
 import uz.tsue.ricoin.dto.request.UserVerificationRequestDto;
+import uz.tsue.ricoin.dto.response.UserResponseDto;
 import uz.tsue.ricoin.entity.User;
 import uz.tsue.ricoin.entity.VerificationCode;
 import uz.tsue.ricoin.entity.enums.Role;
@@ -151,6 +152,20 @@ public class AuthenticationService {
         } catch (MessagingException e) {
             throw new InvalidRequestException(messageSource.getMessage("application.exception.notification.FailedToSendCode", null, RequestContextUtils.getLocale(request)));
         }
+    }
+
+    public UserResponseDto getUserDto(User user){
+        return UserResponseDto.builder()
+                .email(user.getEmail())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .phoneNumber(user.getPhoneNumber())
+                .groupName(user.getGroupName())
+                .balance(user.getBalance())
+                .orders(user.getOrders())
+                .createdDate(user.getCreatedDate())
+                .lastModifiedDate(user.getLastModifiedDate())
+                .build();
     }
 
     private String generateVerificationCode(int length) {

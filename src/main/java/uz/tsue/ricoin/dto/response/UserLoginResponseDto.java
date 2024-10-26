@@ -9,5 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserLoginResponseDto {
     private String token;
-    private long expiresIn;
+    private UserResponseDto user;
 }

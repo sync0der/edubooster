@@ -1,7 +1,6 @@
 package uz.tsue.ricoin.service.interfaces;
 
 import jakarta.servlet.http.HttpServletRequest;
-import uz.tsue.ricoin.dto.request.OrderRequestDto;
 import uz.tsue.ricoin.dto.response.OrderResponseDto;
 import uz.tsue.ricoin.entity.Order;
 import uz.tsue.ricoin.entity.User;

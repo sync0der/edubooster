@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import uz.tsue.ricoin.dto.request.OrderRequestDto;
 import uz.tsue.ricoin.dto.response.OrderResponseDto;
 import uz.tsue.ricoin.entity.Order;
 import uz.tsue.ricoin.entity.Product;

@@ -7,12 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import uz.tsue.ricoin.dto.request.OrderRequestDto;
 import uz.tsue.ricoin.entity.User;
 import uz.tsue.ricoin.service.NotificationService;
 import uz.tsue.ricoin.service.interfaces.OrderService;
-import uz.tsue.ricoin.service.interfaces.ProductService;
-import uz.tsue.ricoin.service.interfaces.UserService;
 
 import java.util.NoSuchElementException;
 

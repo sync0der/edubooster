@@ -24,10 +24,9 @@ public class OrderController {
     private final NotificationService notificationService;
 
     @PostMapping("/{productId}/order")
-    public ResponseEntity<?> orderProduct(@AuthenticationPrincipal User user, @PathVariable Long productId, @RequestBody OrderRequestDto orderRequestDto, HttpServletRequest request) {
-        orderService.makeOrder(user, productId, orderRequestDto);
+    public ResponseEntity<?> orderProduct(@AuthenticationPrincipal User user, @PathVariable Long productId, @RequestParam int quantity) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(notificationService.generateNotificationMessage("application.notification.Successfully", request));
+                .body(orderService.makeOrder(user, productId, quantity));
     }
 
 

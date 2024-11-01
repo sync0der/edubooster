@@ -62,15 +62,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void makeOrder(User user, Long id, OrderRequestDto orderRequestDto) {
+    public OrderResponseDto makeOrder(User user, Long id, int quantity) {
         Product product = productService.findById(id);
 
-        if (productService.isStockAvailable(product, orderRequestDto.getQuantity())) {
+        if (productService.isStockAvailable(product, quantity)) {
 
             Order order = Order.builder()
                     .product(product)
-                    .quantity(orderRequestDto.getQuantity())
-                    .price(product.getPrice() * orderRequestDto.getQuantity())
+                    .quantity(quantity)
+                    .price(product.getPrice() * quantity)
                     .user(user)
                     .status(OrderStatus.PENDING)
                     .build();
@@ -81,6 +81,7 @@ public class OrderServiceImpl implements OrderService {
 
                 user.getOrders().add(order);
                 userService.save(user);
+                return getOrderResponseDtoFromOrder(order);
             } else {
                 throw new InsufficientBalanceException();
             }
@@ -128,6 +129,7 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderResponseDto getOrderResponseDtoFromOrder(Order order) {
         return OrderResponseDto.builder()
+                .id(order.getId())
                 .product(order.getProduct())
                 .quantity(order.getQuantity())
                 .price(order.getPrice())

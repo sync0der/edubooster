@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderService {
     void save(Order order);
 
-    void makeOrder(User user, Long id, OrderRequestDto orderRequestDto);
+    OrderResponseDto makeOrder(User user, Long id, int quantity);
 
     void cancelOrder(Long orderId, HttpServletRequest request);
 

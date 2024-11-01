@@ -2,7 +2,6 @@ package uz.tsue.ricoin.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,7 +9,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import uz.tsue.ricoin.dto.response.UserDto;
 import uz.tsue.ricoin.entity.User;
-import uz.tsue.ricoin.repository.UserRepository;
 import uz.tsue.ricoin.service.NotificationService;
 import uz.tsue.ricoin.service.interfaces.UserService;
 

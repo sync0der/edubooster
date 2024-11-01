@@ -1,9 +1,7 @@
 package uz.tsue.ricoin.service.impls;
 
-import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import uz.tsue.ricoin.dto.response.UserDto;
 import uz.tsue.ricoin.entity.User;

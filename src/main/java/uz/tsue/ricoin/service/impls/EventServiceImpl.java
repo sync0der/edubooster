@@ -44,8 +44,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void add(EventDto eventDto) {
-        eventRepository.save(getEventFromEventDto(eventDto));
+    public EventDto create(EventDto eventDto) {
+        Event event = getEventFromEventDto(eventDto);
+        eventRepository.save(event);
+        return getEventDtoFromEvent(event);
     }
 
     @Override
@@ -94,6 +96,7 @@ public class EventServiceImpl implements EventService {
 
     private EventDto getEventDtoFromEvent(Event event){
         return EventDto.builder()
+                .id(event.getId())
                 .name(event.getName())
                 .description(event.getDescription())
                 .place(event.getPlace())

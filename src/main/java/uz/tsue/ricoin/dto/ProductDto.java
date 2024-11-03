@@ -1,6 +1,9 @@
 package uz.tsue.ricoin.dto;
 
 import lombok.*;
+import uz.tsue.ricoin.entity.ProductImage;
+
+import java.util.List;
 
 @Builder
 @Getter
@@ -12,6 +15,6 @@ public class ProductDto {
     private String name;
     private String description;
     private int price;
-    private String imageUrl;
+    private List<ProductImage> images;
     private int availableQuantity;
 }

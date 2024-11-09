@@ -1,8 +1,6 @@
 FROM openjdk:21
 
-#WORKDIR /app
-
-COPY target/ricoin.jar .
+ADD target/ricoin.jar ricoin.jar
 
 EXPOSE 8080
 

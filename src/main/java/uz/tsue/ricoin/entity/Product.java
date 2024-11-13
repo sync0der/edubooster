@@ -24,8 +24,6 @@ public class Product {
     private String description;
     private Integer price;
     private int availableQuantity;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "product")
-    private List<ProductImage> images =  new ArrayList<>();
+    private String imgUrl;
 
 }

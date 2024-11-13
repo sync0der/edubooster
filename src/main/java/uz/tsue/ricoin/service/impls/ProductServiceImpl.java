@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.tsue.ricoin.dto.ProductDto;
 import uz.tsue.ricoin.entity.Product;
-import uz.tsue.ricoin.entity.ProductImage;
 import uz.tsue.ricoin.repository.ProductRepository;
-import uz.tsue.ricoin.service.interfaces.ProductImageService;
 import uz.tsue.ricoin.service.interfaces.ProductService;
 
 import java.util.ArrayList;
@@ -19,7 +17,6 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductImageService imageService;
 
     @Override
     public ProductDto get(Long id) {
@@ -40,7 +37,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto create(ProductDto productDto, MultipartFile file) {
         Product product = getProductFromProductDto(productDto);
-        imageService.extractImage(product, file, new ProductImage());
         productRepository.save(product);
         return getProductDtoFromProduct(product);
     }
@@ -85,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .images(product.getImages())
+                .imageUrl(product.getImgUrl())
                 .price(product.getPrice())
                 .availableQuantity(product.getAvailableQuantity())
                 .build();
@@ -97,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .price(productDto.getPrice())
-                .images(productDto.getImages())
+                .imgUrl(productDto.getImageUrl())
                 .availableQuantity(productDto.getAvailableQuantity())
                 .build();
     }

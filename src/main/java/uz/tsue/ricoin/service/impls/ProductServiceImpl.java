@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto create(ProductDto productDto, MultipartFile file) {
+    public ProductDto create(ProductDto productDto) {
         Product product = productMapper.toEntity(productDto);
         productRepository.save(product);
         return productMapper.toDto(product);
@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
             Optional.ofNullable(productDto.getName()).ifPresent(product::setName);
             Optional.ofNullable(productDto.getDescription()).ifPresent(product::setDescription);
             Optional.ofNullable(productDto.getPrice()).ifPresent(product::setPrice);
-            Optional.ofNullable(productDto.getImageUrl()).ifPresent(product::setImgUrl);
+            Optional.ofNullable(productDto.getImageUrl()).ifPresent(product::setImageUrl);
             Optional.ofNullable(productDto.getAvailableQuantity()).ifPresent(product::setAvailableQuantity);
         }
         productRepository.save(product);

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.tsue.ricoin.dto.request.UserUpdateRequestDto;
 import uz.tsue.ricoin.dto.response.UserDto;
 import uz.tsue.ricoin.entity.User;
+import uz.tsue.ricoin.mapper.UserMapper;
 import uz.tsue.ricoin.repository.UserRepository;
 import uz.tsue.ricoin.service.interfaces.UserService;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
     public User findByEmail(String email) {
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userRepository.findAll();
         List<UserDto> users = new ArrayList<>();
         for (User user : userList) {
-            users.add(getUserDtoFromUser(user));
+            users.add(userMapper.toDto(user));
         }
         return users;
     }
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getCurrentUser(User user) {
-        return getUserDtoFromUser(user);
+        return userMapper.toDto(user);
     }
 
 
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
         Optional.ofNullable(userDto.getPhoneNumber()).ifPresent(user::setPhoneNumber);
         user.setLastModifiedDate(LocalDateTime.now());
         userRepository.save(user);
-        return getUserDtoFromUser(user);
+        return userMapper.toDto(user);
     }
 
     @Override
@@ -85,19 +87,5 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    private UserDto getUserDtoFromUser(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .groupName(user.getGroupName())
-                .balance(user.getBalance())
-                .createdDate(user.getCreatedDate())
-                .lastModifiedDate(user.getLastModifiedDate())
-                .orders(user.getOrders())
-                .build();
-    }
 }
 

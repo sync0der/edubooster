@@ -34,9 +34,9 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody ProductDto productDto, @RequestParam MultipartFile file) {
+    public ResponseEntity<?> create(@RequestBody ProductDto productDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(productService.create(productDto, file));
+                .body(productService.create(productDto));
     }
 
     @PostMapping("/{id}/update")

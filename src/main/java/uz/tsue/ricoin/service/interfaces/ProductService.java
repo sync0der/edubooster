@@ -14,7 +14,7 @@ public interface ProductService {
 
     Product findById(Long id);
 
-    ProductDto create(ProductDto productDto,  MultipartFile file);
+    ProductDto create(ProductDto productDto);
 
     void update(Long id, ProductDto productDto);
 

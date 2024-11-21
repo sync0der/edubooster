@@ -13,7 +13,7 @@ public class ProductMapper implements CustomMapperInterface<Product, ProductDto>
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
-                .imageUrl(product.getImgUrl())
+                .imageUrl(product.getImageUrl())
                 .price(product.getPrice())
                 .availableQuantity(product.getAvailableQuantity())
                 .build();
@@ -25,7 +25,7 @@ public class ProductMapper implements CustomMapperInterface<Product, ProductDto>
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .price(productDto.getPrice())
-                .imgUrl(productDto.getImageUrl())
+                .imageUrl(productDto.getImageUrl())
                 .availableQuantity(productDto.getAvailableQuantity())
                 .build();
     }

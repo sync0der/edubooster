@@ -27,5 +27,5 @@ public class UserDto implements Serializable {
     private int balance;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
-    private List<Order> orders;
+    private List<OrderDto> orders;
 }

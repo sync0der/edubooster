@@ -3,6 +3,7 @@ package uz.tsue.ricoin.service.impls;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.tsue.ricoin.dto.request.UserUpdateRequestDto;
 import uz.tsue.ricoin.dto.response.UserDto;
 import uz.tsue.ricoin.entity.User;
 import uz.tsue.ricoin.repository.UserRepository;
@@ -35,20 +36,7 @@ public class UserServiceImpl implements UserService {
         List<User> userList = userRepository.findAll();
         List<UserDto> users = new ArrayList<>();
         for (User user : userList) {
-            users.add(
-                    UserDto.builder()
-                            .id(user.getId())
-                            .email(user.getEmail())
-                            .phoneNumber(user.getPhoneNumber())
-                            .firstName(user.getFirstName())
-                            .lastName(user.getLastName())
-                            .groupName(user.getGroupName())
-                            .balance(user.getBalance())
-                            .createdDate(user.getCreatedDate())
-                            .lastModifiedDate(user.getLastModifiedDate())
-                            .orders(user.getOrders())
-                            .build()
-            );
+            users.add(getUserDtoFromUser(user));
         }
         return users;
     }
@@ -76,36 +64,40 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getCurrentUser(User user) {
-        return UserDto.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .groupName(user.getGroupName())
-                .phoneNumber(user.getPhoneNumber())
-                .balance(user.getBalance())
-                .createdDate(user.getCreatedDate())
-                .lastModifiedDate(user.getLastModifiedDate())
-                .orders(user.getOrders())
-                .build();
+        return getUserDtoFromUser(user);
     }
 
 
     @Override
-    public void update(UserDto userDto) {
-        User user = userRepository.findByEmail(userDto.getEmail())
-                .orElseThrow(RuntimeException::new); //todo throw exception and catch via controller or global handler by implementing i18n
+    public UserDto update(Long id, UserUpdateRequestDto userDto) {
+        User user = findById(id);
         Optional.ofNullable(userDto.getFirstName()).ifPresent(user::setFirstName);
         Optional.ofNullable(userDto.getLastName()).ifPresent(user::setLastName);
         Optional.ofNullable(userDto.getGroupName()).ifPresent(user::setGroupName);
         Optional.ofNullable(userDto.getPhoneNumber()).ifPresent(user::setPhoneNumber);
         user.setLastModifiedDate(LocalDateTime.now());
         userRepository.save(user);
+        return getUserDtoFromUser(user);
     }
 
     @Override
     public void delete(Long id, HttpServletRequest request) {
         userRepository.deleteById(id);
+    }
+
+    private UserDto getUserDtoFromUser(User user) {
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .groupName(user.getGroupName())
+                .balance(user.getBalance())
+                .createdDate(user.getCreatedDate())
+                .lastModifiedDate(user.getLastModifiedDate())
+                .orders(user.getOrders())
+                .build();
     }
 }
 

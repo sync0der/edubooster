@@ -1,4 +1,4 @@
-package uz.tsue.ricoin.dto;
+package uz.tsue.ricoin.dto.response;
 
 import lombok.*;
 

@@ -1,6 +1,7 @@
 package uz.tsue.ricoin.service.interfaces;
 
 import jakarta.servlet.http.HttpServletRequest;
+import uz.tsue.ricoin.dto.request.UserUpdateRequestDto;
 import uz.tsue.ricoin.dto.response.UserDto;
 import uz.tsue.ricoin.entity.User;
 
@@ -24,7 +25,7 @@ public interface UserService {
     UserDto getCurrentUser(User user);
 
 
-    void update(UserDto userDto);
+    UserDto update(Long id, UserUpdateRequestDto userDto);
 
     void delete(Long id, HttpServletRequest request);
 }

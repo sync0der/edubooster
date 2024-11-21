@@ -28,18 +28,9 @@ public class OrderController {
 
 
     @GetMapping("/order/all/get")
-    public ResponseEntity<?> getAllOrders(@AuthenticationPrincipal User user) {
+    public ResponseEntity<?> getAll(@AuthenticationPrincipal User user) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(orderService.getAll(user.getId()));
-    }
-
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("/order/{id}/remove")
-    public ResponseEntity<?> removeOrder(@PathVariable Long id, HttpServletRequest request) {
-        orderService.remove(id);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(notificationService.generateRemovedNotificationMessage(request));
     }
 
     @DeleteMapping("order/{orderId}/cancel")

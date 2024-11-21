@@ -2,14 +2,14 @@ package uz.tsue.ricoin.service.impls;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.tsue.ricoin.dto.EventDto;
+import uz.tsue.ricoin.dto.response.EventDto;
 import uz.tsue.ricoin.entity.Event;
+import uz.tsue.ricoin.mapper.EventMapper;
 import uz.tsue.ricoin.repository.EventRepository;
 import uz.tsue.ricoin.service.PromoCodeGeneratorService;
+import uz.tsue.ricoin.service.UtilsService;
 import uz.tsue.ricoin.service.interfaces.EventService;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,11 +21,13 @@ public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
     private final PromoCodeGeneratorService promoCodeGeneratorService;
+    private final UtilsService utilsService;
+    private final EventMapper eventMapper;
 
     @Override
     public EventDto get(Long id) {
         Event event = findById(id);
-        return getEventDtoFromEvent(event);
+        return eventMapper.toDto(event);
     }
 
     @Override
@@ -33,7 +35,7 @@ public class EventServiceImpl implements EventService {
         List<EventDto> events = new ArrayList<>();
         List<Event> list = eventRepository.findAll();
         for (Event event : list) {
-            events.add(getEventDtoFromEvent(event));
+            events.add(eventMapper.toDto(event));
         }
         return events;
     }
@@ -45,9 +47,9 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto create(EventDto eventDto) {
-        Event event = getEventFromEventDto(eventDto);
+        Event event = eventMapper.toEntity(eventDto);
         eventRepository.save(event);
-        return getEventDtoFromEvent(event);
+        return eventMapper.toDto(event);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class EventServiceImpl implements EventService {
         Optional.ofNullable(eventDto.price()).ifPresent(event::setPrice);
         event.setPromoCode(promoCodeGeneratorService.generatePromoCode(10));
         if (eventDto.dateTime() != null)
-            event.setDateTime(getFormattedDateTime(eventDto.dateTime()));
+            event.setDateTime(utilsService.getFormattedDateTime(eventDto.dateTime()));
 
         eventRepository.save(event);
     }
@@ -74,37 +76,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public void remove(Long id) {
         eventRepository.deleteById(id);
-    }
-
-
-    private LocalDateTime getFormattedDateTime(String dateTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(dateTime, formatter);
-    }
-
-    private Event getEventFromEventDto(EventDto eventDto){
-        return Event.builder()
-                .name(eventDto.name())
-                .description(eventDto.description())
-                .price(eventDto.price())
-                .place(eventDto.place())
-                .dateTime(getFormattedDateTime(eventDto.dateTime()))
-                .isActive(true)
-                .promoCode(promoCodeGeneratorService.generatePromoCode(10))
-                .build();
-    }
-
-    private EventDto getEventDtoFromEvent(Event event){
-        return EventDto.builder()
-                .id(event.getId())
-                .name(event.getName())
-                .description(event.getDescription())
-                .place(event.getPlace())
-                .price(event.getPrice())
-                .dateTime(event.getDateTime().toString())
-                .isActive(event.isActive())
-                .promoCode(event.getPromoCode())
-                .build();
     }
 
 }

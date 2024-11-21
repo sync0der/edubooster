@@ -1,6 +1,6 @@
 package uz.tsue.ricoin.service.interfaces;
 
-import uz.tsue.ricoin.dto.EventDto;
+import uz.tsue.ricoin.dto.response.EventDto;
 
 import java.util.List;
 

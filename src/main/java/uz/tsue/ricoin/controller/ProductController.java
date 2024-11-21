@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uz.tsue.ricoin.dto.ProductDto;
+import uz.tsue.ricoin.dto.response.ProductDto;
 import uz.tsue.ricoin.service.NotificationService;
 import uz.tsue.ricoin.service.interfaces.ProductService;
 

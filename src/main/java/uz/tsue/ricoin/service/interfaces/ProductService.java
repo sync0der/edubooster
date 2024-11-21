@@ -1,7 +1,7 @@
 package uz.tsue.ricoin.service.interfaces;
 
 import org.springframework.web.multipart.MultipartFile;
-import uz.tsue.ricoin.dto.ProductDto;
+import uz.tsue.ricoin.dto.response.ProductDto;
 import uz.tsue.ricoin.entity.Product;
 
 import java.util.List;

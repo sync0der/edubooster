@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.RequestContextUtils;
-import uz.tsue.ricoin.dto.response.OrderResponseDto;
+import uz.tsue.ricoin.dto.response.OrderDto;
 import uz.tsue.ricoin.entity.Order;
 import uz.tsue.ricoin.entity.Product;
 import uz.tsue.ricoin.entity.User;
@@ -13,6 +13,7 @@ import uz.tsue.ricoin.entity.enums.OrderStatus;
 import uz.tsue.ricoin.exceptions.InsufficientBalanceException;
 import uz.tsue.ricoin.exceptions.InsufficientStockException;
 import uz.tsue.ricoin.exceptions.InvalidRequestException;
+import uz.tsue.ricoin.mapper.OrderMapper;
 import uz.tsue.ricoin.repository.OrderRepository;
 import uz.tsue.ricoin.service.interfaces.OrderService;
 import uz.tsue.ricoin.service.interfaces.ProductService;
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductService productService;
     private final UserService userService;
     private final MessageSource messageSource;
+    private final OrderMapper orderMapper;
 
     @Override
     public void save(Order order) {
@@ -37,17 +39,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto get(Long id) {
+    public OrderDto get(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        return getOrderResponseDtoFromOrder(order);
+        return orderMapper.toDto(order);
     }
 
     @Override
-    public List<OrderResponseDto> getAll(Long userId) {
+    public List<OrderDto> getAll(Long userId) {
         List<Order> list = userService.findById(userId).getOrders();
-        List<OrderResponseDto> orders = new ArrayList<>();
+        List<OrderDto> orders = new ArrayList<>();
         for (Order order : list) {
-            orders.add(getOrderResponseDtoFromOrder(order));
+            orders.add(orderMapper.toDto(order));
         }
         return orders;
     }
@@ -61,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDto makeOrder(User user, Long id, int quantity) {
+    public OrderDto makeOrder(User user, Long id, int quantity) {
         Product product = productService.findById(id);
 
         if (productService.isStockAvailable(product, quantity)) {
@@ -80,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
                 user.getOrders().add(order);
                 userService.save(user);
-                return getOrderResponseDtoFromOrder(order);
+                return orderMapper.toDto(order);
             } else {
                 throw new InsufficientBalanceException();
             }
@@ -116,23 +118,8 @@ public class OrderServiceImpl implements OrderService {
         userService.save(user);
     }
 
-    @Override
-    public void remove(Long id) {
-        orderRepository.deleteById(id);
-    }
-
     private int calculateRefunding(Order order, int commissionPercentage) {
         int commissionFee = Math.round(order.getPrice() * (commissionPercentage / 100F));
         return order.getPrice() - commissionFee;
-    }
-
-    private OrderResponseDto getOrderResponseDtoFromOrder(Order order) {
-        return OrderResponseDto.builder()
-                .id(order.getId())
-                .product(order.getProduct())
-                .quantity(order.getQuantity())
-                .price(order.getPrice())
-                .orderStatus(order.getStatus())
-                .build();
     }
 }

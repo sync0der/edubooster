@@ -9,7 +9,7 @@ import uz.tsue.ricoin.entity.enums.OrderStatus;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderResponseDto {
+public class OrderDto {
     private Long id;
     private Product product;
     private Integer quantity;

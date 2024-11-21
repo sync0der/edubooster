@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import uz.tsue.ricoin.dto.request.UserUpdateRequestDto;
 import uz.tsue.ricoin.dto.response.UserDto;
 import uz.tsue.ricoin.entity.User;
 import uz.tsue.ricoin.service.NotificationService;
@@ -21,7 +22,7 @@ public class UserController {
     private final UserService userService;
     private final NotificationService notificationService;
 
-    @GetMapping("/me")
+    @GetMapping("/info")
     public ResponseEntity<UserDto> authenticatedUser(@AuthenticationPrincipal User user) {
         return ResponseEntity.ok(userService.getCurrentUser(user));
     }
@@ -42,11 +43,10 @@ public class UserController {
 
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody UserDto user, HttpServletRequest request) {
-        userService.update(user);
+    @PutMapping("/{id}/update")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody UserUpdateRequestDto user, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(notificationService.generateUpdatedNotificationMessage(request));
+                .body(userService.update(id, user));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
